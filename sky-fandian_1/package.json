@@ -1,0 +1,33 @@
+{
+  "name": "bbq-order-uniapp",
+  "version": "1.0.0",
+  "description": "烧烤扫码点餐系统 - 基于 uniapp 开发的多端点餐应用",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "uniapp",
+    "点餐系统",
+    "扫码点餐",
+    "烧烤",
+    "餐饮",
+    "小程序",
+    "vue"
+  ],
+  "author": {
+    "name": "782390603",
+    "email": "782390603@qq.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/782390603/bbq-order-uniapp"
+  },
+  "dependencies": {
+    "uview-ui": "^2.0.38"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  }
+}

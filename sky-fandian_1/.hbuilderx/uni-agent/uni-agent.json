@@ -1,0 +1,19 @@
+{
+  "permission": {
+    "external_directory": {
+      "/Applications/HBuilderX.app/Contents/HBuilderX/plugins/hbuilderx-ai-chat/uni-agent/skills/common/scripts/*": "allow",
+      "/Applications/HBuilderX.app/Contents/HBuilderX/plugins/hbuilderx-ai-chat/uni-agent/common/scripts/*": "allow",
+      "/Users/fengzongchuang/Library/Application Support/HBuilder X/projects/7e313fd6128e09097e9e5592d6ce9b7c/*": "allow",
+      "/Users/fengzongchuang/Library/Application Support/HBuilder X/projects/b270453fec50229ac5d517d9a7a0f708/*": "allow",
+      "/Users/fengzongchuang/Library/Application Support/HBuilder X/*": "allow",
+      "/Users/fengzongchuang/Library/Application Support/微信开发者工具/50a7d9210159a32f006158795f893857/WeappLog/*": "allow",
+      "/Applications/HBuilderX.app/Contents/HBuilderX/plugins/compile-dart-sass/*": "allow",
+      "/Applications/HBuilderX.app/Contents/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/vue-cli-plugin-uni/*": "allow",
+      "/tmp/*": "allow",
+      "/Applications/HBuilderX.app/Contents/HBuilderX/plugins/uniapp-cli/node_modules/sass/*": "allow",
+      "/Applications/HBuilderX.app/Contents/HBuilderX/plugins/uniapp-cli/node_modules/@dcloudio/uni-cli-shared/lib/*": "allow",
+      "/Users/fengzongchuang/Library/Application\\ Support/HBuilder\\ X/*": "allow",
+      "/Applications/HBuilderX.app/Contents/HBuilderX/plugins/*": "allow"
+    }
+  }
+}

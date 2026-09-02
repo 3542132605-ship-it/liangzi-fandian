@@ -1,0 +1,166 @@
+@import './icons.scss';
+
+// 通用页面容器
+.page {
+  min-height: 100vh;
+  background-color: $background-color;
+  display: flex;
+  flex-direction: column;
+}
+
+// 通用内容区域
+.content-container {
+  flex: 1;
+  padding: $spacing-md;
+}
+
+// 通用卡片样式
+.card {
+  background-color: $card-background;
+  border-radius: $border-radius-md;
+  padding: $spacing-md;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-sm;
+  
+  &-header {
+    padding-bottom: $spacing-sm;
+    margin-bottom: $spacing-sm;
+    border-bottom: 1px solid $divider-color;
+    
+    .card-title {
+      font-size: $font-size-md;
+      font-weight: bold;
+      color: $text-color-primary;
+    }
+  }
+  
+  &-footer {
+    padding-top: $spacing-sm;
+    margin-top: $spacing-sm;
+    border-top: 1px solid $divider-color;
+  }
+}
+
+// 通用按钮样式
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80rpx;
+  border-radius: $border-radius-md;
+  font-size: $font-size-md;
+  color: #fff;
+  background-color: $primary-color;
+  
+  &-primary {
+    background: $gradient-primary;
+  }
+  
+  &-outline {
+    background-color: transparent;
+    border: 1px solid $primary-color;
+    color: $primary-color;
+  }
+  
+  &-disabled {
+    background-color: $text-color-disabled;
+    opacity: 0.7;
+  }
+  
+  &-block {
+    width: 100%;
+  }
+  
+  &-sm {
+    height: 60rpx;
+    font-size: $font-size-sm;
+  }
+  
+  &-lg {
+    height: 100rpx;
+    font-size: $font-size-lg;
+  }
+}
+
+// 通用表单样式
+.form-item {
+  margin-bottom: $spacing-md;
+  
+  &-label {
+    font-size: $font-size-sm;
+    color: $text-color-secondary;
+    margin-bottom: $spacing-xs;
+  }
+  
+  &-input {
+    height: 80rpx;
+    background-color: #f7f7f7;
+    border-radius: $border-radius-sm;
+    padding: 0 $spacing-md;
+    font-size: $font-size-md;
+  }
+}
+
+// 通用底部操作栏
+.footer-bar {
+  padding: $spacing-md;
+  background-color: $card-background;
+  border-top: 1px solid $border-color;
+}
+
+// 通用空状态
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-xl 0;
+  
+  &-image {
+    width: 200rpx;
+    height: 200rpx;
+    margin-bottom: $spacing-md;
+  }
+  
+  &-text {
+    font-size: $font-size-sm;
+    color: $text-color-hint;
+    margin-bottom: $spacing-md;
+  }
+}
+
+// 通用列表项
+.list-item {
+  display: flex;
+  align-items: center;
+  padding: $spacing-md;
+  background-color: $card-background;
+  border-bottom: 1px solid $divider-color;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  &-icon {
+    margin-right: $spacing-md;
+  }
+  
+  &-content {
+    flex: 1;
+  }
+  
+  &-title {
+    font-size: $font-size-md;
+    color: $text-color-primary;
+    margin-bottom: $spacing-xs;
+  }
+  
+  &-subtitle {
+    font-size: $font-size-sm;
+    color: $text-color-hint;
+  }
+  
+  &-right {
+    margin-left: $spacing-sm;
+  }
+} 

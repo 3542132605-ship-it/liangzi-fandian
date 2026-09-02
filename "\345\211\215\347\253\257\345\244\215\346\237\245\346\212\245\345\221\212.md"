@@ -1,0 +1,90 @@
+# 良子饭店扫码点餐 — 前端 Mock 复查报告
+
+> 日期：2026-08-07  
+> 范围：顾客端 10 页 + 管理端 10 页 + 公共组件（共约 20 个 .vue）  
+> 基准：PRD v1.1 + 中式雅致视觉规范  
+> 方式：逐页源码审查 + 关键阻断人工复核  
+> 结论：**mock 闭环基本成型，但存在 7 条阻断级问题，其中 3 条导致核心流程跑不通，须先修。**
+
+---
+
+## 一、阻断级（核心流程跑不通，必须先修）
+
+| # | 位置 | 问题 | 依据 | 修复 |
+|---|------|------|------|------|
+| B1 | `manage/menu/menu.vue:172` | 三态切换映射完全错位：`itemList:['上架','售罄','下架']` 配 `map=[0,1,2]`，点"上架"→status=0(下架)、"售罄"→1(上架)、"下架"→2(售罄) | PRD 菜品三态即时生效 | 改 `map=[1,2,0]` |
+| B2 | `order/submit.vue:184-204` | 支付成功只清购物车+跳转，**从不生成订单**写入 storage，订单列表永远只有 mock 那几条 | PRD 支付成功跳订单详情 | handlePay 成功回调里构造 order（含 type/table_no/status/items/total/created_at）push 进 `orderList` storage，order.vue 改读 storage 合并 mock |
+| B3 | `menu/menu.vue:238-239` | `switchCat` 只改 `currentCat`，无 `scroll-into-view` 联动，点左侧分类右侧菜品不滚动定位 | PRD 双栏左分类点击定位右菜品 | switchCat 里设 `scrollInto='cat-'+id` 并确保模板已绑定；sidebar 数据源用 visibleGroups 对齐索引 |
+| B4 | `manage/delivery/delivery.vue:107-111,142-159` | 外卖状态机缺独立"送达"节点，PRD 5态（备菜→配送中→送达→已完成）被压成 3态（cooking/delivering/done），"送达"与"已完成"合并 | PRD 外卖状态机 | 增加 `delivered` 态 + "确认送达"按钮，再到 done |
+| B5 | `manage/dine-in/dine-in.vue` | 堂食状态机缺 `pending` 待支付态与"取消订单"操作，filters/mock 均无 pending | PRD 堂食状态机"待支付可取消" | 补 pending 态与取消按钮 |
+| B6 | `manage/delivery/delivery.vue:160-168` | `callPhone` 用 `phone.replace(/\*/g,'0')` 把脱敏号 `138****6281` 还原成 `13800006281` 拨出，**拨错号**；剪贴板存的还是带星号脱敏号 | 拨号正确性 | mock 用真实号段或直接提示"演示号码"，不可替换星号 |
+| B7 | `order/OrderList.vue` | 全文用 `$shadow-sm`/`$text-color-secondary`/`$primary-color-dark`/`$error-color` 等变量，theme.scss 全部用 `$lz-*` 命名，**编译失败或样式裸奔**；且无任何页面 import，是废弃文件 | 视觉规范统一变量 | 直接删除该文件 |
+
+> 已人工复核 B1/B2/B3/B6 源码，确认属实。
+
+---
+
+## 二、重要级（功能缺失或逻辑漏洞，影响完整度）
+
+| # | 位置 | 问题 | 修复 |
+|---|------|------|------|
+| I1 | `menu/menu.vue` | 购物车 `cartData` 全局一份，未按桌号隔离，A桌扫码后B桌会读到A桌购物车 | key 改 `cart_${tableNo}`，load/save 按 key 读写 |
+| I2 | `order/submit.vue:144-156` | `canPay` 只查 address+cartTotal，**不查起送价、不查堂食桌号**；用户进 submit 后再减商品可绕过起送价 | canPay 增 `takeout && cartPrice<deliveryMin` 与 `dine-in && !tableNo` 判断 |
+| I3 | `my/my.vue:113-116` | `goOrders(tab)` 始终 switchTab，tab 参数丢失，"堂食订单"/"外卖订单"入口无效 | 存 `orderTab` storage，order.vue onShow 读取置 currentTab |
+| I4 | `order/order.vue:131` vs `submit.vue` | 字段不一致：order 用 `item.quantity`，购物车用 `item.count`，生成订单时数量会得 0 | 生成订单时统一映射 `quantity: i.count` |
+| I5 | `login/login.vue:614,545` | 整页视觉与主题脱节（绿底按钮/红链接，未用 `$lz-*`），且调用真实 `thirdLogin` API 与 mock 阶段冲突，与 my.vue 授权重复 | mock 阶段移除或改 mock 版并套主题变量，授权统一到 my.vue |
+| I6 | `home/home.vue:129-131` | `options.scene` 是微信场景值（数字），误当桌号；小程序码桌号应在 `q`/query 参数 | 删 scene 分支，仅取 `options.table_no` |
+| I7 | `order/order.vue:151-153` | `cancelOrder` 直接改 mock 模块引用，污染源数据，重启不恢复 | 用 map 生成新对象替换 |
+| I8 | `manage/dine-in.vue` / `delivery.vue` | 新订单轮询（5秒）+ 声音提醒未实现，onShow 仅空注释；delivery 定义了 `.new-alert` 样式却未用 | 补轮询定时器 + uni.createInnerAudioContext 提示音 |
+| I9 | `manage/settings/tables/staff/delivery-config/analytics.vue` | 子页 onLoad 均无 `staff_token` 鉴权，可被 URL 直接闯入（其他管理页有检查） | 补 token 校验，无则 reLaunch 登录页 |
+| I10 | `manage/login/login.vue:80-86` | token 只存不带时效，各页只查存在性不查过期 | 存登录时间戳，进入时校验 2 小时过期 |
+| I11 | `manage/settings/tables.vue:72-80` | 长按保存相册未实现，仅 showToast 占位 | 补 canvas 绘制 + `saveImageToPhotosAlbum` 授权流程 |
+| I12 | `components/manage-tabbar/manage-tabbar.vue:40` | 用 `redirectTo` 切 tab，目标页重新 onLoad，堂食已勾选/外卖筛选态全丢 | 改全局 store 持久化或 reLaunch+状态缓存 |
+| I13 | `mock/manage.js:150-151` | 员工数据脏：`zhaojun` role='waiter' 但 role_text='配送员'；`sunli` 多了错误字段 `created_text:'已停用'` | 修正 role_text 与字段 |
+
+---
+
+## 三、优化级（体验打磨，接后端前可缓）
+
+1. 各页无 loading/错误态（mock 同步无，接后端时补骨架屏+异常重试）
+2. `home.vue` 顶部未显示桌号（PRD 要求扫码后顶部显示桌号）
+3. `my.vue:89` `getUserProfile` 已废弃，应改 `<button open-type="chooseAvatar">` + nickname input
+4. `menu.vue` 售罄判断不统一（home 用 `status===2`，menu addSingle 未二次校验）
+5. `submit.vue:169` onShow 不清 selectedAddress，残留上次选择
+6. `menu_open.vue:121` 数量无上限，建议 `<99`
+7. `manage/menu/edit.vue:146-148` canSave 未校验多规格项，按钮可点但保存被拦
+8. `manage/menu/menu.vue:236-251` 左滑点非滑动项不收起已滑开项
+9. `delivery-config.vue:55-61` 空值 `Number('')=0` 通过校验存为 0 元起送
+10. `edit.vue:177-185` `uni.chooseImage` 已废弃，应改 `uni.chooseMedia`
+11. `edit.vue:202-208` 规格价格存绝对价，PRD 字面为"价格偏移"，**需与后端确认定价口径**
+12. `analytics.vue:94-99` 空数据 `Math.max(...[])` 得 -Infinity，barHeight NaN，需兜底
+13. `pages.json:70-131` 管理页未开 `enablePullDownRefresh`
+14. `manage/menu.vue:324` 下架菜品仅降透明度，未排序降权
+
+---
+
+## 四、修复优先级建议
+
+**P0｜本轮先修（3 条，改动小但致命）**
+- B1 三态切换 `map=[1,2,0]`（1 行）
+- B2 支付成功生成订单（闭环核心）
+- B6 callPhone 错号（演示正确性）
+
+**P1｜闭环完整性（本轮或下轮）**
+- B3 菜单分类联动、B4 外卖状态机补送达、B5 堂食补待支付/取消
+- B7 删废弃 OrderList.vue
+- I1 购物车桌号隔离、I2 起送价/桌号校验、I4 字段统一
+
+**P2｜接后端前补齐**
+- I8 轮询提醒、I9/I10 鉴权与 token 过期、I11 长按保存
+- I12 tabbar 状态保持、I13 mock 数据修正
+- 各页 loading/错误态（接后端时一并）
+
+**P3｜体验打磨**（优化级 14 条，按需）
+
+---
+
+## 五、备注
+
+- 复查基于 mock 阶段，部分"缺失"（如微信支付 JSAPI、真实扫码解码、轮询）本就属后端职责，报告只标注前端 mock 层应具备的占位与流转。
+- 规格定价口径（绝对价 vs 偏移价，I11/优化11）需与后端表设计对齐后再定前端计算方式。

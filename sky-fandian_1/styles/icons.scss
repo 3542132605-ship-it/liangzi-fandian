@@ -1,0 +1,60 @@
+
+// 图标尺寸规范
+$icon-size-xs: 28rpx;
+$icon-size-sm: 32rpx;
+$icon-size-md: 40rpx;
+$icon-size-lg: 48rpx;
+$icon-size-xl: 64rpx;
+
+// 图标颜色规范
+$icon-color-primary: $primary-color;
+$icon-color-muted: $text-color-hint;
+$icon-color-light: #ffffff;
+$icon-color-dark: $text-color-primary;
+
+// 图标间距规范
+$icon-spacing-right: $spacing-xs;
+$icon-spacing-left: $spacing-xs;
+
+// 带文字的图标容器样式
+.icon-text {
+  display: inline-flex;
+  align-items: center;
+  
+  &.right-icon {
+    flex-direction: row-reverse;
+    
+    .icon {
+      margin-left: $icon-spacing-left;
+      margin-right: 0;
+    }
+  }
+  
+  .icon {
+    margin-right: $icon-spacing-right;
+  }
+  
+  .text {
+    font-size: $font-size-sm;
+  }
+}
+
+// 图标网格布局
+.icon-grid {
+  display: flex;
+  flex-wrap: wrap;
+  
+  .icon-grid-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-md;
+    
+    .icon-text {
+      margin-top: $spacing-xs;
+      font-size: $font-size-xs;
+      color: $text-color-secondary;
+    }
+  }
+} 

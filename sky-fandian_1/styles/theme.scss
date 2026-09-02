@@ -1,0 +1,196 @@
+/**
+ * 良子饭店 · 中式雅致主题
+ * 朱砂红主色 + 墨色文字 + 宣纸白底 + 楷体标题
+ *
+ * 配色一致性锁：全站一个主色 $lz-primary 贯穿
+ * 形状一致性锁：卡片16rpx / 图片12rpx / 输入12rpx / 标签8rpx / 主按钮胶囊
+ */
+
+/* ============ 主色 · 朱砂红（降饱和沉稳） ============ */
+$lz-primary: #9B2D28;
+$lz-primary-dark: #7A2320;
+$lz-primary-light: #C44A42;
+$lz-primary-bg: rgba(155, 45, 40, 0.08);
+
+/* ============ 墨色文字 ============ */
+$lz-ink: #1F1A17;       /* 主文字 · 暖墨黑 */
+$lz-ink-2: #6B5D52;     /* 次要文字 · 墨灰 */
+$lz-ink-3: #A89B8E;     /* 提示文字 · 淡墨 */
+
+/* ============ 宣纸白底 ============ */
+$lz-paper: #F7F3EC;        /* 页面背景 · 宣纸 */
+$lz-paper-light: #FBF8F2;  /* 浅宣纸 */
+$lz-card: #FFFFFF;         /* 卡片 */
+
+/* ============ 淡墨线 ============ */
+$lz-line: #E8DFD0;
+$lz-line-light: #F0E9DC;
+
+/* ============ 点缀 · 淡鎏金（极少用） ============ */
+$lz-gold: #B8956A;
+
+/* ============ 状态色 ============ */
+$lz-success: #4A7C59;   /* 竹绿 · 上齐/完成 */
+$lz-warn: #C77B3A;      /* 琥珀 · 售罄/警示 */
+$lz-soldout: #C77B3A;
+$lz-disabled: #C9BFB1;
+
+/* ============ 字体 ============ */
+$lz-font-serif: "STKaiti", "KaiTi", "Songti SC", "Noto Serif SC", serif;
+$lz-font-sans: -apple-system, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+
+/* ============ 圆角系统（形状一致性锁） ============ */
+$lz-radius-card: 16rpx;
+$lz-radius-img: 12rpx;
+$lz-radius-input: 12rpx;
+$lz-radius-tag: 8rpx;
+$lz-radius-pill: 999rpx;
+
+/* ============ 间距 ============ */
+$lz-gap-page: 32rpx;
+$lz-gap-card: 32rpx;
+$lz-gap-elem: 24rpx;
+
+/* ============ 阴影（墨色淡阴影，非纯黑） ============ */
+$lz-shadow-card: 0 4rpx 24rpx rgba(31, 26, 23, 0.06);
+$lz-shadow-btn: 0 6rpx 16rpx rgba(155, 45, 40, 0.22);
+$lz-shadow-float: 0 -4rpx 20rpx rgba(31, 26, 23, 0.05);
+
+/* ============ 全局基础 ============ */
+page {
+  background-color: $lz-paper;
+  color: $lz-ink;
+  font-family: $lz-font-sans;
+  font-size: 28rpx;
+  line-height: 1.6;
+}
+
+/* 楷体标题工具类 */
+.lz-title {
+  font-family: $lz-font-serif;
+  color: $lz-ink;
+  letter-spacing: 2rpx;
+  font-weight: 500;
+}
+
+/* 文字色工具类 */
+.lz-text-primary { color: $lz-primary; }
+.lz-text-ink { color: $lz-ink; }
+.lz-text-2 { color: $lz-ink-2; }
+.lz-text-3 { color: $lz-ink-3; }
+.lz-text-gold { color: $lz-gold; }
+
+/* 主色胶囊按钮 */
+.lz-btn-primary {
+  background: $lz-primary;
+  color: #fff;
+  border-radius: $lz-radius-pill;
+  font-size: 30rpx;
+  font-weight: 500;
+  text-align: center;
+  line-height: 88rpx;
+  &:active {
+    background: $lz-primary-dark;
+    transform: scale(0.98);
+  }
+  &.is-disabled {
+    background: $lz-disabled;
+    color: rgba(255,255,255,0.85);
+  }
+}
+
+/* 描边按钮 */
+.lz-btn-ghost {
+  background: transparent;
+  color: $lz-primary;
+  border: 2rpx solid $lz-primary;
+  border-radius: $lz-radius-pill;
+  font-size: 28rpx;
+  text-align: center;
+  line-height: 76rpx;
+  &:active { background: $lz-primary-bg; }
+}
+
+/* 卡片 */
+.lz-card {
+  background: $lz-card;
+  border-radius: $lz-radius-card;
+  box-shadow: $lz-shadow-card;
+}
+
+/* 分割线 · 淡墨线 */
+.lz-divider {
+  height: 1rpx;
+  background: $lz-line;
+}
+
+/* 价格 · 朱砂红 */
+.lz-price {
+  color: $lz-primary;
+  font-weight: 600;
+}
+
+/* 章印风标签（朱砂红描边小标签） */
+.lz-seal {
+  display: inline-flex;
+  align-items: center;
+  padding: 4rpx 14rpx;
+  border: 2rpx solid $lz-primary;
+  color: $lz-primary;
+  border-radius: $lz-radius-tag;
+  font-size: 20rpx;
+  letter-spacing: 1rpx;
+  background: $lz-primary-bg;
+}
+
+/* 售罄章 */
+.lz-seal-soldout {
+  border-color: $lz-soldout;
+  color: $lz-soldout;
+  background: rgba(199, 123, 58, 0.08);
+}
+
+/* ============ 兼容别名（旧代码迁移，勿新增） ============ */
+$gradient-primary: $lz-primary;
+$border-color: $lz-line;
+$background-color: $lz-paper;
+
+/* 字体尺寸 */
+$font-size-xs: 20rpx;
+$font-size-sm: 24rpx;
+$font-size-base: 28rpx;
+$font-size-md: 30rpx;
+$font-size-lg: 32rpx;
+
+/* 间距 */
+$spacing-xs: 8rpx;
+$spacing-sm: 16rpx;
+$spacing-md: 24rpx;
+$spacing-lg: 32rpx;
+$spacing-xl: 48rpx;
+
+/* 圆角 */
+$border-radius-sm: $lz-radius-tag;
+$border-radius-md: 12rpx;
+$border-radius-pill: 999rpx;
+
+/* 阴影 */
+$shadow-sm: 0 2rpx 12rpx rgba(31, 26, 23, 0.05);
+
+/* 语义色 */
+$primary-color: $lz-primary;
+$primary-color-dark: $lz-primary-dark;
+$info-color: #6B7B8D;
+$success-color: $lz-success;
+$warning-color: $lz-warn;
+$error-color: #DD524D;
+
+/* 文字色 */
+$text-color-primary: $lz-ink;
+$text-color-secondary: $lz-ink-2;
+$text-color-hint: $lz-ink-3;
+$text-color-disabled: $lz-disabled;
+
+/* 卡片/分割线 */
+$card-background: $lz-card;
+$divider-color: $lz-line;

@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+
+# WorkBuddy 工作区数据
+.workbuddy/
+
+# Node 依赖
+node_modules/
+
+# uni-app 构建产物
+sky-fandian_1/unpackage/
+
+# 本地敏感配置（不入库）
+server/.env
+project.private.config.json
+
+# 本地原型预览页（非项目代码）
+preview.html
+manage-preview.html
+
+# 日志
+*.log
